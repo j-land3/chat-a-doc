@@ -52,7 +52,7 @@ For csv, md, html and txt formats, templates will not be presented.
 ## Features
 
 ### Document Generation
-- **Multiple Formats**: PDF, DOCX, HTML, Markdown, TXT, CSV (6 formats)
+- **Multiple Formats**: PDF, DOCX, HTML, Markdown, TXT, CSV
 - **Word Templates**: Interactive template selection (A, B, C...) with automatic styling application
 - **PDF Templates**: Optional CSS-based templates for custom PDF styling (corporate, modern, academic examples included)
 - **Auto-filenames**: Intuitive, content-based file naming by AI model
@@ -69,8 +69,6 @@ For csv, md, html and txt formats, templates will not be presented.
 - **Template Concierge**: Guidance for offering template selection options
 
 ### Supported Formats
-
-**Output Formats:**
 - **HTML**: Generated from markdown using python-markdown
 - **TXT**: Generated from markdown using python-markdown + html2text
 - **MARKDOWN**: Pass-through (validates and normalizes)
@@ -215,6 +213,7 @@ $env:USE_HTTP_LINKS="true" #optional
 $env:HTTP_BASE_URL="http://localhost:8080" #optional
 python -m chat_a_doc.http_server
 ```
+--- 
 
 ## Environment Variables
 
@@ -254,6 +253,8 @@ An optional environment variable. If your chat client is capable of generating l
 **PYTHONUNBUFFERED**
 Set to `1` for real-time output. Already set in pre-built container. Should be manually added for all other installs.
 
+--- 
+
 ## Dependencies
 
 **Core Libraries:**
@@ -267,6 +268,8 @@ Set to `1` for real-time output. Already set in pre-built container. Should be m
 - Cairo, Pango, GDK-Pixbuf (for WeasyPrint PDF generation)
 
 For a complete list, see `pyproject.toml`.
+
+--- 
 
 ## Templates
 Chat-a-doc supports MS Word and PDF templates. Templates should be placed in the `templates/` subdirectory of your mounted volume. For example, if your volume mount is `/path/to/output:/app/files`, place templates in `/path/to/output/templates/`.
@@ -359,6 +362,7 @@ Then connect via:
   "url": "https://your-server.com/chat-a-doc"
 }
 ```
+--- 
 
 ## Model Selection
 Use chat-a-doc with a model that's proficient in tool calling. Here are top picks according to the latest leaderboards.
@@ -375,6 +379,8 @@ Use chat-a-doc with a model that's proficient in tool calling. Here are top pick
 | 8 | gpt-4o | 0.857 |
 | 9 | gpt-4o-mini | 0.852 |
 | 10 | claude-3-5-sonnet-20241022 | 0.851 |
+
+--- 
 
 ## Troubleshooting
 
@@ -440,8 +446,12 @@ curl -X POST http://your-server-ip:8080 \
 
 If these work but your client doesn't connect, the issue is likely with the client configuration or mcp-remote setup.
 
+--- 
+
 ## License
 This setup was originally based on `mcp-pandoc` by [vivekVells](https://github.com/vivekVells/mcp-pandoc), which is licensed under MIT License. Pandoc was removed in favor of a lighter-weight set of document conversion libraries, while maintaining the MCP portion.
+
+--- 
 
 ## Contributing
 
