@@ -234,16 +234,16 @@ python -m chat_a_doc.http_server
 >   - System directories like `/etc`, `/home`, `/root` (server)
 > - Only mount what the container needs access to
 
-**HTTP_PORT**
+**HTTP_PORT**  
 - **Port**: Default `8080` (internal port configurable via `HTTP_PORT`). If host port 8080 is in use, map to different port: `-p 8087:8080`
 
-**USE_HTTP_LINKS**
+**USE_HTTP_LINKS**  
 Optional: If chat client does not support links to local paths, set `USE_HTTP_LINKS=true`. The user will be presented an HTTP link to their doc (e.g., `http://localhost:8080/files/document.pdf`), opening their default browser and prompting to save the doc locally.
 
-**HTTP_BASE_URL**
+**HTTP_BASE_URL**  
 Optional: Base URL for HTTP file links. If `USE_HTTP_LINKS=true`, set an access URL (e.g., `http://localhost:8080` or `http://your-server-ip:8080` for remote servers). Must match the machine's IP and the configured port.
 
-**LINK_ROOT**
+**LINK_ROOT**  
 An optional environment variable. If your chat client is capable of generating links to local paths, and when *not using* `USE_HTTP_LINKS`, this will ensure the correct file path is returned to users.
 
 - Use Cases
@@ -252,7 +252,7 @@ An optional environment variable. If your chat client is capable of generating l
         - `LINK_ROOT=smb://server/share/chat-a-doc/docs`
         - `LINK_ROOT=//server/share/chat-a-doc/docs`
 
-**PYTHONUNBUFFERED**
+**PYTHONUNBUFFERED**  
 Set to `1` for real-time output. Already set in pre-built container. Should be manually added for all other installs.
 
 --- 
