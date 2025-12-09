@@ -29,7 +29,7 @@ AI: [paraphrasing]
 > [File: Banana Benefits: Nutritional Powerhouse]()
 > Let me know if you'd like any adjustments!
 
-[browser opens with prompt to download locally]
+[if using http links, the browser opens with prompt to download locally]
 
 For csv, md, html and txt formats, templates will not be presented.
 
