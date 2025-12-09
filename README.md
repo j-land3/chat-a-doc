@@ -4,6 +4,8 @@
 
 Some AI clients lack the ability to generate documents for export. Chat-a-doc fills that gap by providing a secure MCP server that generates documents directly from chat conversations. Simply make a request (e.g., "Create a research report on X"), wait for the AI to present template options (for DOCX and PDF formats), and you'll receive a link (optionally HTTP) to download your document. Need to make edits? Ask the model and a new document will be generated. Uses lightweight, purpose-built document conversion libraries (from markdown) and allows users to import custom DOCX and PDF templates to suit their personal style or business needs.
 
+Credit: This setup was originally based on `mcp-pandoc` by [vivekVells](https://github.com/vivekVells/mcp-pandoc). Pandoc was removed in favor of lighter weight libraries, while maintaining the MCP portion.
+
 --- 
 
 ## UX + Use Cases
@@ -445,11 +447,6 @@ curl -X POST http://your-server-ip:8080 \
 ```
 
 If these work but your client doesn't connect, the issue is likely with the client configuration or mcp-remote setup.
-
---- 
-
-## License
-This setup was originally based on `mcp-pandoc` by [vivekVells](https://github.com/vivekVells/mcp-pandoc), which is licensed under MIT License. Pandoc was removed in favor of a lighter-weight set of document conversion libraries, while maintaining the MCP portion.
 
 --- 
 
