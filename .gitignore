@@ -1,0 +1,67 @@
+# Local troubleshooting folder (keep locally, never commit)
+troubleshooting/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lock files (optional - some prefer to commit these)
+# uv.lock
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Test outputs
+/tmp/chat-a-doc/
+/tmp/legacy-generator/  # Legacy path (kept for backward compatibility)
+*.pdf
+*.docx
+*.odt
+test_*.txt
+test_*.pdf
+test_*.odt
+# Test output directory (mirrors ALLOWED_ROOT structure)
+# Ignore everything in test_output/ except .gitkeep files
+tests/test_output/*
+!tests/test_output/.gitkeep
+!tests/test_output/templates/
+tests/test_output/templates/*
+!tests/test_output/templates/.gitkeep
+
+# Git branch info (optional - can be committed if sanitized)
+# GIT_BRANCH_INFO.md
+
+# Documentation directory
+docs/
+
+doc-gen.code-workspace
+TEMP.md

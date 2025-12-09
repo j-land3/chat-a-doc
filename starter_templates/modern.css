@@ -1,0 +1,98 @@
+/* Modern PDF Template
+   Clean, contemporary styling with modern typography */
+
+@page {
+    size: A4;
+    margin: 0.75in;
+}
+
+body {
+    font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #333333;
+}
+
+h1 {
+    font-size: 28pt;
+    font-weight: 300;
+    color: #2196F3;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-size: 20pt;
+    font-weight: 400;
+    color: #424242;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+}
+
+h3 {
+    font-size: 15pt;
+    font-weight: 500;
+    color: #616161;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+p {
+    margin: 0.6em 0;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2em 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th {
+    background-color: #2196F3;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 12px;
+    text-align: left;
+    border: none;
+}
+
+td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+code {
+    background-color: #f5f5f5;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 10pt;
+    color: #d32f2f;
+}
+
+pre {
+    background-color: #263238;
+    color: #aed581;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 10pt;
+    line-height: 1.5;
+}
+
+ul, ol {
+    margin: 0.6em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.4em 0;
+}

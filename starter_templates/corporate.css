@@ -1,0 +1,99 @@
+/* Corporate PDF Template
+   Professional, formal styling suitable for business documents */
+
+@page {
+    size: A4;
+    margin: 1in;
+}
+
+body {
+    font-family: "Arial", "Helvetica", sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #2c3e50;
+}
+
+h1 {
+    font-size: 22pt;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    border-bottom: 2px solid #34495e;
+    padding-bottom: 0.3em;
+}
+
+h2 {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #34495e;
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+}
+
+p {
+    margin: 0.5em 0;
+    text-align: justify;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+    border: 1px solid #bdc3c7;
+}
+
+th {
+    background-color: #34495e;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #2c3e50;
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #bdc3c7;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #ecf0f1;
+}
+
+code {
+    background-color: #ecf0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: "Courier New", monospace;
+    font-size: 10pt;
+    color: #e74c3c;
+}
+
+pre {
+    background-color: #ecf0f1;
+    padding: 12px;
+    border-radius: 5px;
+    border-left: 4px solid #3498db;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+    font-size: 10pt;
+}
+
+ul, ol {
+    margin: 0.5em 0;
+    padding-left: 2em;
+}
+
+li {
+    margin: 0.3em 0;
+}

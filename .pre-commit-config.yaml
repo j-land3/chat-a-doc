@@ -1,0 +1,61 @@
+# Pre-commit hooks for chat-a-doc
+# Install: uv run pre-commit install
+# Run manually: uv run pre-commit run --all-files
+
+repos:
+  # Ruff for linting and formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Run ruff linter
+      - id: ruff
+        args: [--fix]
+        types_or: [python, pyi]
+
+      # Run ruff formatter
+      - id: ruff-format
+        types_or: [python, pyi]
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Prevent committing large files
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+
+      # Check for merge conflicts
+      - id: check-merge-conflict
+
+      # Check YAML files
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags
+
+      # Check JSON files
+      - id: check-json
+
+      # Ensure files end with newline
+      - id: end-of-file-fixer
+        exclude: '\.lock$'
+
+      # Remove trailing whitespace
+      - id: trailing-whitespace
+        exclude: '\.lock$|\.md$'  # Allow trailing spaces in markdown (for line breaks)
+
+      # Check for debug statements
+      - id: debug-statements
+
+      # Check for private keys
+      - id: detect-private-key
+
+  # Optional: Run tests on changed Python files (commented out - can be slow)
+  # Uncomment if you want tests to run before every commit
+  # - repo: local
+  #   hooks:
+  #     - id: pytest
+  #       name: pytest
+  #       entry: uv run pytest
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: false
+  #       always_run: false
