@@ -10,22 +10,50 @@ import os
 def get_allowed_root() -> str:
     """Get and validate the ALLOWED_ROOT environment variable.
 
+    Defaults to /app/files if not set (for Docker convenience).
+    For non-Docker installations, ALLOWED_ROOT must be explicitly set
+    if /app/files does not exist.
+
     Returns:
         str: The absolute, real path of the allowed root directory.
 
     Raises:
-        ValueError: If ALLOWED_ROOT is not set or is invalid.
+        ValueError: If ALLOWED_ROOT path is invalid or not accessible.
 
     """
-    allowed_root = os.environ.get("ALLOWED_ROOT")
-    if not allowed_root:
-        raise ValueError(
-            "ALLOWED_ROOT environment variable is required for security. "
-            "Set it to the directory where files should be stored (e.g., /app/files). "
-            "It must match the container path in your Docker volume mount."
-        )
+    allowed_root = os.environ.get("ALLOWED_ROOT", "/app/files")
 
-    return os.path.realpath(allowed_root)
+    try:
+        resolved_path = os.path.realpath(allowed_root)
+    except (OSError, PermissionError) as e:
+        if allowed_root == "/app/files" and not os.environ.get("ALLOWED_ROOT"):
+            # Default path doesn't exist - user needs to set ALLOWED_ROOT
+            raise ValueError(
+                "ALLOWED_ROOT environment variable is required. "
+                "The default path '/app/files' does not exist or is not accessible. "
+                "Please set ALLOWED_ROOT to the directory where files should be stored. "
+                "Example: export ALLOWED_ROOT=/path/to/output"
+            ) from e
+        else:
+            # User explicitly set a path that's invalid
+            raise ValueError(f"ALLOWED_ROOT path '{allowed_root}' is not accessible: {e}") from e
+
+    # Validate the path exists and is a directory
+    if not os.path.exists(resolved_path):
+        if allowed_root == "/app/files" and not os.environ.get("ALLOWED_ROOT"):
+            raise ValueError(
+                "ALLOWED_ROOT environment variable is required. "
+                "The default path '/app/files' does not exist. "
+                "Please set ALLOWED_ROOT to the directory where files should be stored. "
+                "Example: export ALLOWED_ROOT=/path/to/output"
+            )
+        else:
+            raise ValueError(f"ALLOWED_ROOT path '{allowed_root}' (resolved to '{resolved_path}') does not exist")
+
+    if not os.path.isdir(resolved_path):
+        raise ValueError(f"ALLOWED_ROOT path '{allowed_root}' (resolved to '{resolved_path}') is not a directory")
+
+    return resolved_path
 
 
 def validate_path(path: str | None, path_name: str, allowed_root: str | None = None) -> None:

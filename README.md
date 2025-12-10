@@ -79,7 +79,7 @@ For csv, md, html and txt formats, templates will not be presented.
 - **DOCX**: Generated from markdown using python-markdown + python-docx (with template support)
 
 ### Security
-- **Path Validation**: All operations restricted to `ALLOWED_ROOT` directory (required, enforced at startup)
+- **Path Validation**: All operations restricted to `ALLOWED_ROOT` directory (required for non-docker installs only, enforced at startup)
 - **Docker Isolation**: Non-root user, restricted volume mounts, no host root access
 - **No External Binaries**: Uses lightweight Python libraries
 - **Input Validation**: Comprehensive parameter and format validation
@@ -112,12 +112,24 @@ docker run -d \
   --name chat-a-doc \
   --restart=unless-stopped \
   -p 8080:8080 \
-  -v /path/to/output:/app/files \
-  -e ALLOWED_ROOT=/app/files \
+  -v /path/to/chat-a-doc:/app/files \
   -e USE_HTTP_LINKS=true \
   -e HTTP_BASE_URL=http://localhost:8080 \
   jland3/chat-a-doc:latest
 ```
+
+**Volume Mount:** Map your host directory to `/app/files` in the container. All generated documents will be saved to the root of this directory.
+
+- **Example: Local desktop (macOS/Linux):** `$HOME/Documents/chat-a-doc:/app/files`
+- **Example: Local desktop (Windows):** `C:\Users\YourName\Documents\chat-a-doc:/app/files`
+- **Example: Remote server (Generic Linux):** `/var/lib/chat-a-doc:/app/files`
+
+**Note:** Docker requires absolute paths for volume mounts.
+
+> ⚠️ **Security Considerations:**
+> - Avoid mounting sensitive directories such as:
+>   - `$HOME/.ssh`, `$HOME/.config`, `$HOME/Desktop` (local)
+>   - System directories like `/etc`, `/home`, `/root` (server)
 
 ---
 
@@ -187,14 +199,15 @@ pip install -e .
 
 ```bash
 # Create a directory for generated files and templates.
-mkdir -p ~/your-desired-parent-directory/chat-a-doc-output/templates
+# All generated documents will be saved to the root of this directory.
+mkdir -p ~/path/to/chat-a-doc-path/templates
 ```
 
 **Step 4: Run the Server**
 
 **Using uv:**
 ```bash
-export ALLOWED_ROOT=~/your-desired-parent-directory/chat-a-doc-output
+export ALLOWED_ROOT=~/path/to/chat-a-doc
 export USE_HTTP_LINKS=true #optional
 export HTTP_BASE_URL=http://localhost:8080 #optional
 uv run python -m chat_a_doc.http_server
@@ -202,7 +215,7 @@ uv run python -m chat_a_doc.http_server
 
 **Using pip/virtual environment:**
 ```bash
-export ALLOWED_ROOT=~/your-desired-parent-directory/chat-a-doc-output
+export ALLOWED_ROOT=~/path/to/chat-a-doc
 export USE_HTTP_LINKS=true #optional
 export HTTP_BASE_URL=http://localhost:8080 #optional
 python -m chat_a_doc.http_server
@@ -210,29 +223,24 @@ python -m chat_a_doc.http_server
 
 **Windows (PowerShell):**
 ```powershell
-$env:ALLOWED_ROOT="C:\Users\YourName\your-desired-parent-directory\chat-a-doc-output"
+$env:ALLOWED_ROOT="C:\Users\path\to\chat-a-doc"
 $env:USE_HTTP_LINKS="true" #optional
 $env:HTTP_BASE_URL="http://localhost:8080" #optional
 python -m chat_a_doc.http_server
 ```
+
+**Note:** `ALLOWED_ROOT` is **required** for non-Docker installations. It specifies the directory where all generated documents will be saved (to the root of that directory).
 --- 
 
 ## Environment Variables
 
 **ALLOWED_ROOT**
-- Root directory for container and path where docs will be saved
-- **ALLOWED_ROOT is required** and must match the container path in your volume mount (e.g., `/app/files`)
-- Docker requires absolute paths for volume mounts. Use `$HOME` (expands in shell) or provide full absolute path. `~` tilde expansion doesn't work in Docker volume mounts.
-- **Example: Local desktop (macOS/Linux):** `$HOME/Documents/output:/app/files` (or `/Users/username/Documents/chat-a-doc/files:/app/files` - replace `username` with your actual username)
-- **Example: Local desktop (Windows):** `C:\Users\YourName\Documents\chat-a-doc\files:/app/files`
-- **Example: Remote server (Generic Linux):** `/var/lib/chat-a-doc/files:/app/files`
-- **Example: Remote server (Synology):** `/volume1/docker/chat-a-doc/files:/app/files`
+- **Only required for Non-Docker Installs:** Set to the directory where you want all generated documents saved (files go to the root of this directory). Example: `export ALLOWED_ROOT=~/Documents/path/to/chat-a-doc`
 
 > ⚠️ **Security Considerations:**
 > - Avoid mounting sensitive directories such as:
 >   - `$HOME/.ssh`, `$HOME/.config`, `$HOME/Desktop` (local)
 >   - System directories like `/etc`, `/home`, `/root` (server)
-> - Only mount what the container needs access to
 
 **HTTP_PORT**  
 - **Port**: Default `8080` (internal port configurable via `HTTP_PORT`). If host port 8080 is in use, map to different port: `-p 8087:8080`
@@ -247,10 +255,10 @@ Optional: Base URL for HTTP file links. If `USE_HTTP_LINKS=true`, set an access 
 An optional environment variable. If your chat client is capable of generating links to local paths, and when *not using* `USE_HTTP_LINKS`, this will ensure the correct file path is returned to users.
 
 - Use Cases
-    - Local: If set to: `/Users/harry/Documents/output`, resulting link is: `file:///Users/harry/Documents/output/document.pdf`
+    - Local: If set to: `/Users/harry/Documents/chat-a-doc`, resulting link is: `file:///Users/harry/Documents/chat-a-doc/document.pdf`
     - Network shares: Define SMB/network paths
-        - `LINK_ROOT=smb://server/share/chat-a-doc/docs`
-        - `LINK_ROOT=//server/share/chat-a-doc/docs`
+        - `LINK_ROOT=smb://server/share/chat-a-doc`
+        - `LINK_ROOT=//server/share/chat-a-doc`
 
 **PYTHONUNBUFFERED**  
 Set to `1` for real-time output. Already set in pre-built container. Should be manually added for all other installs.
@@ -274,12 +282,15 @@ For a complete list, see `pyproject.toml`.
 --- 
 
 ## Templates
-Chat-a-doc supports MS Word and PDF templates. Templates should be placed in the `templates/` subdirectory of your mounted volume. For example, if your volume mount is `/path/to/output:/app/files`, place templates in `/path/to/output/templates/`.
+Chat-a-doc supports MS Word and PDF templates. Templates should be placed in the `templates/` subdirectory of your output directory.
+
+- **Docker:** If your volume mount is `/path/to/chat-a-doc:/app/files`, place templates in `/path/to/chat-a-doc/templates/`
+- **Non-Docker:** If `ALLOWED_ROOT=~/Documents/chat-a-doc`, place templates in `~/Documents/chat-a-doc/templates/`
 
 **Note:** DOCX and PDF formats require templates. At least one DOCX template is required for DOCX generation, and at least one PDF (CSS) template is required for PDF generation.
 
 **Starter Templates:**
-To get started with templates, a few are provided in `starter_templates/` to be copied to `ALLOWED_ROOT/templates/`.
+To get started with templates, a few are provided in `starter_templates/` to be copied to your output directory's `templates/` subdirectory.
 
 **Word Templates**
 1. Create a document with your desired styling in Microsoft Word or LibreOffice. Modify styles (Normal, Heading 1, Heading 2, etc.), fonts, margins, colors, headers, footers as desired.
