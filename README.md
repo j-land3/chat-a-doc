@@ -229,7 +229,7 @@ $env:HTTP_BASE_URL="http://localhost:8080" #optional
 python -m chat_a_doc.http_server
 ```
 
-****Note:*++* `ALLOWED_ROOT` is **required** for non-Docker installations. It specifies the directory where all generated documents will be saved (to the root of that directory).
+****Note:**** `ALLOWED_ROOT` is **required** for non-Docker installations. It specifies the directory where all generated documents will be saved (to the root of that directory).
 --- 
 
 ## Environment Variables
