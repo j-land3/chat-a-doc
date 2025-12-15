@@ -31,6 +31,14 @@ def get_or_create_session(session_id):
     with _session_lock:
         if session_id not in _mcp_sessions:
             # Spawn MCP server process (text mode for stdio)
+            # Ensure environment variables are passed (especially ALLOWED_ROOT)
+            env = os.environ.copy()
+            # Ensure ALLOWED_ROOT is set (fallback to default if not in env)
+            if "ALLOWED_ROOT" not in env:
+                env["ALLOWED_ROOT"] = "/app/files"
+            # #region agent log
+            print(f"[DEBUG] Spawning MCP server with ALLOWED_ROOT={env.get('ALLOWED_ROOT', 'NOT SET')}", file=sys.stderr)
+            # #endregion
             process = subprocess.Popen(  # noqa: S603 (sys.executable is trusted)
                 [sys.executable, "-m", "chat_a_doc"],
                 stdin=subprocess.PIPE,
@@ -38,7 +46,11 @@ def get_or_create_session(session_id):
                 stderr=subprocess.PIPE,
                 text=True,
                 bufsize=1,
+                env=env,  # Explicitly pass environment
             )
+            # #region agent log
+            print(f"[DEBUG] Spawned MCP server process: pid={process.pid}, returncode={process.returncode}", file=sys.stderr)
+            # #endregion
             # Start background thread to forward stderr to main process stderr
             stderr_thread = threading.Thread(target=forward_stderr, args=(process,), daemon=True)
             stderr_thread.start()
@@ -69,6 +81,9 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
             # Get or create MCP server session
             session = get_or_create_session(session_id)
             process = session["process"]
+            # #region agent log
+            print(f"[DEBUG] MCP process status: alive={process.poll() is None}, pid={process.pid}", file=sys.stderr)
+            # #endregion
 
             # Check if process is still alive
             if process.poll() is not None:
@@ -87,6 +102,9 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
             send_start = time.time()
             request_line = json.dumps(request_json) + "\n"
             method = request_json.get("method", "")
+            # #region agent log
+            print(f"[DEBUG] Sending to MCP: method={method}, request_line={request_line[:200]}", file=sys.stderr)
+            # #endregion
             try:
                 process.stdin.write(request_line)
                 process.stdin.flush()
@@ -166,6 +184,9 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                     raise RuntimeError("No response from MCP server")
 
                 response_line = response_queue.get()
+                # #region agent log
+                print(f"[DEBUG] Received response line: {response_line[:500] if response_line else 'EMPTY'}", file=sys.stderr)
+                # #endregion
                 if not response_line:
                     # Empty response - check if process died
                     if process.poll() is not None:
@@ -176,6 +197,9 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                         except Exception:  # noqa: S110 (intentionally broad for cleanup)
                             pass
                         error_msg = f"MCP server process died (exit code: {process.returncode}): {stderr_output}"
+                        # #region agent log
+                        print(f"[DEBUG] MCP process died: {error_msg}", file=sys.stderr)
+                        # #endregion
                         raise RuntimeError(error_msg)
                     raise RuntimeError("Empty response from MCP server")
 
@@ -183,9 +207,18 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                 parse_start = time.time()
                 try:
                     response_json = json.loads(response_line.strip())
+                    # #region agent log
+                    print(f"[DEBUG] MCP response parsed: has_result={('result' in response_json)}, has_error={('error' in response_json)}", file=sys.stderr)
+                    if "result" in response_json and "content" in response_json["result"]:
+                        content_text = response_json["result"]["content"][0].get("text", "") if response_json["result"]["content"] else ""
+                        print(f"[DEBUG] Response content preview: {content_text[:200]}", file=sys.stderr)
+                    # #endregion
                     response_body = json.dumps(response_json).encode("utf-8")
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
                     # If not valid JSON, return as-is
+                    # #region agent log
+                    print(f"[DEBUG] MCP response not JSON (error: {e}): {response_line[:500]}", file=sys.stderr)
+                    # #endregion
                     response_body = response_line.encode("utf-8")
 
             # Send HTTP response

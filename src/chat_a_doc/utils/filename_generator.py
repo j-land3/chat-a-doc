@@ -81,6 +81,10 @@ def generate_filename(
     """
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
+    # #region agent log
+    try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"filename_generator.py:83","message":"generate_filename entry","data":{"output_dir":output_dir,"title":title,"output_format":output_format,"dir_exists":os.path.exists(output_dir)},"timestamp":int(time_module.time()*1000)})+"\n")
+    except: pass
+    # #endregion
 
     # Sanitize title and normalize extension
     sanitized_title = sanitize_title(title)
@@ -94,6 +98,10 @@ def generate_filename(
         candidate_path = os.path.join(output_dir, candidate_filename)
 
         if not os.path.exists(candidate_path):
+            # #region agent log
+            try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"filename_generator.py:97","message":"generate_filename returning path","data":{"candidate_path":candidate_path,"sequence":sequence},"timestamp":int(time_module.time()*1000)})+"\n")
+            except: pass
+            # #endregion
             return candidate_path
 
     # If we've exhausted all sequence numbers, wrap around to 00

@@ -235,7 +235,22 @@ def test_docker_html_generation(docker_container):
     assert "content" in response["result"]
 
     # Verify file was created in container
+    # #region agent log
+    import json as json_module, time as time_module
+    debug_log = docker_container["temp_dir"] / "debug.log"
+    all_files = list(docker_container["temp_dir"].rglob("*"))
+    print(f"[TEST DEBUG] All files in temp_dir: {[str(f.relative_to(docker_container['temp_dir'])) for f in all_files]}")
+    # #endregion
+    # Get Docker logs for debugging
+    logs_result = subprocess.run(
+        ["docker", "logs", docker_container["container_name"]],
+        capture_output=True,
+        text=True,
+    )
+    if "DEBUG" in logs_result.stderr or "DEBUG" in logs_result.stdout:
+        print(f"[TEST DEBUG] Docker logs with DEBUG:\n{logs_result.stderr}\n{logs_result.stdout}")
     html_files = list(docker_container["temp_dir"].glob("*.html"))
+    print(f"[TEST DEBUG] HTML files found: {[str(f) for f in html_files]}")
     assert len(html_files) > 0
 
     # Verify file content

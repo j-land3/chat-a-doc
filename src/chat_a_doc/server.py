@@ -18,6 +18,7 @@ from markdown content. Uses lightweight, purpose-built generators.
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
 import mcp.server.stdio
@@ -317,15 +318,34 @@ async def handle_call_tool(
     if not output_file:
         # Get the default output directory
         default_allowed_root = os.environ.get("ALLOWED_ROOT", "/app/files")
+        # #region agent log
+        print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+        try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"server.py:319","message":"ALLOWED_ROOT env var","data":{"ALLOWED_ROOT":default_allowed_root,"title":title,"output_format":output_format},"timestamp":int(time.time()*1000)})+"\n")
+        except: pass
+        # #endregion
         output_file = generate_filename(
             title=title,
             output_format=output_format,
             output_dir=default_allowed_root,
         )
+        # #region agent log
+        print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+        try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"server.py:325","message":"Generated output_file path","data":{"output_file":output_file,"output_dir":default_allowed_root},"timestamp":int(time.time()*1000)})+"\n")
+        except: pass
+        # #endregion
 
     # Security: Validate paths are within ALLOWED_ROOT (REQUIRED)
     # This MUST happen before any file operations to prevent path traversal attacks
-    allowed_root = get_allowed_root()
+    try:
+        allowed_root = get_allowed_root()
+        # #region agent log
+        print(f"[DEBUG] get_allowed_root() returned: {allowed_root}, exists: {os.path.exists(allowed_root)}, isdir: {os.path.isdir(allowed_root) if os.path.exists(allowed_root) else False}", file=sys.stderr)
+        # #endregion
+    except Exception as e:
+        # #region agent log
+        print(f"[DEBUG] get_allowed_root() failed: {e}", file=sys.stderr)
+        # #endregion
+        raise
 
     # Validate all file paths BEFORE reading from them
     # Note: Even deprecated parameters (defaults_file, filters) must be validated
@@ -443,15 +463,52 @@ async def handle_call_tool(
             raise ValueError(f"Unsupported output format: {output_format}")
 
         # Write result to file (handle both str and bytes)
+        # #region agent log
+        print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') else 'N/A'}", file=sys.stderr)
+        try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"B","location":"server.py:446","message":"Before file write","data":{"output_file":output_file,"result_type":type(result).__name__,"result_len":len(result) if hasattr(result,"__len__") else "N/A"},"timestamp":int(time.time()*1000)})+"\n")
+        except: pass
+        # #endregion
         if isinstance(result, str):
             output_file_path = Path(output_file)
+            # #region agent log
+            try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"C","location":"server.py:448","message":"Creating parent dirs","data":{"parent":str(output_file_path.parent),"exists":output_file_path.parent.exists()},"timestamp":int(time.time()*1000)})+"\n")
+            except: pass
+            # #endregion
             output_file_path.parent.mkdir(parents=True, exist_ok=True)
             output_file_path.write_text(result, encoding="utf-8")
+            # #region agent log
+            file_exists = output_file_path.exists()
+            file_size = output_file_path.stat().st_size if file_exists else 0
+            print(f"[DEBUG] File written: {output_file_path}, exists: {file_exists}, size: {file_size}", file=sys.stderr)
+            if not file_exists:
+                print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_file_path.parent.exists()}, parent writable: {os.access(output_file_path.parent, os.W_OK)}", file=sys.stderr)
+            try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"D","location":"server.py:450","message":"After file write (str)","data":{"output_file":str(output_file_path),"exists":file_exists,"size":file_size},"timestamp":int(time.time()*1000)})+"\n")
+            except: pass
+            # #endregion
+            # Verify file was actually created
+            if not file_exists:
+                raise OSError(f"File write failed: {output_file_path} does not exist after write operation")
         else:
             # bytes (for PDF, DOCX)
             output_file_path = Path(output_file)
+            # #region agent log
+            try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"C","location":"server.py:453","message":"Creating parent dirs (bytes)","data":{"parent":str(output_file_path.parent),"exists":output_file_path.parent.exists()},"timestamp":int(time.time()*1000)})+"\n")
+            except: pass
+            # #endregion
             output_file_path.parent.mkdir(parents=True, exist_ok=True)
             output_file_path.write_bytes(result)
+            # #region agent log
+            file_exists = output_file_path.exists()
+            file_size = output_file_path.stat().st_size if file_exists else 0
+            print(f"[DEBUG] File written (bytes): {output_file_path}, exists: {file_exists}, size: {file_size}", file=sys.stderr)
+            if not file_exists:
+                print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+            try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"D","location":"server.py:455","message":"After file write (bytes)","data":{"output_file":str(output_file_path),"exists":file_exists,"size":file_size},"timestamp":int(time.time()*1000)})+"\n")
+            except: pass
+            # #endregion
+            # Verify file was actually created
+            if not file_exists:
+                raise OSError(f"File write failed: {output_file_path} does not exist after write operation")
 
         # Create result message
         result_message = f"Content successfully converted and saved to: {output_file}"
