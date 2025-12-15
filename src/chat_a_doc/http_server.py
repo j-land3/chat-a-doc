@@ -162,7 +162,7 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                                 stderr_output = process.stderr.read(1024)
                         except Exception:  # noqa: S110 (intentionally broad for cleanup)
                             pass
-                        error_msg = f"MCP server process died " f"(exit code: {process.returncode}): {stderr_output}"
+                        error_msg = f"MCP server process died (exit code: {process.returncode}): {stderr_output}"
                         raise RuntimeError(error_msg)
                     raise RuntimeError("No response from MCP server")
 
@@ -176,7 +176,7 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                                 stderr_output = process.stderr.read(1024)
                         except Exception:  # noqa: S110 (intentionally broad for cleanup)
                             pass
-                        error_msg = f"MCP server process died " f"(exit code: {process.returncode}): {stderr_output}"
+                        error_msg = f"MCP server process died (exit code: {process.returncode}): {stderr_output}"
                         raise RuntimeError(error_msg)
                     raise RuntimeError("Empty response from MCP server")
 
