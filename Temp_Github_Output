@@ -1,0 +1,750 @@
+Run uv run ruff check .
+warning: `incorrect-blank-line-before-class` (D203) and `no-blank-line-before-class` (D211) are incompatible. Ignoring `incorrect-blank-line-before-class`.
+warning: `multi-line-summary-first-line` (D212) and `multi-line-summary-second-line` (D213) are incompatible. Ignoring `multi-line-summary-second-line`.
+E501 Line too long (121 > 120)
+  --> src/chat_a_doc/http_server.py:40:121
+   |
+38 |                 env["ALLOWED_ROOT"] = "/app/files"
+39 |             # #region agent log
+40 |             print(f"[DEBUG] Spawning MCP server with ALLOWED_ROOT={env.get('ALLOWED_ROOT', 'NOT SET')}", file=sys.stderr)
+   |                                                                                                                         ^
+41 |             # #endregion
+42 |             process = subprocess.Popen(  # noqa: S603 (sys.executable is trusted)
+   |
+
+E501 Line too long (125 > 120)
+  --> src/chat_a_doc/http_server.py:52:121
+   |
+50 |             )
+51 |             # #region agent log
+52 |             print(f"[DEBUG] Spawned MCP server process: pid={process.pid}, returncode={process.returncode}", file=sys.stderr)
+   |                                                                                                                         ^^^^^
+53 |             # #endregion
+54 |             # Start background thread to forward stderr to main process stderr
+   |
+
+E501 Line too long (126 > 120)
+   --> src/chat_a_doc/http_server.py:188:121
+    |
+186 |                 response_line = response_queue.get()
+187 |                 # #region agent log
+188 |                 print(f"[DEBUG] Received response line: {response_line[:500] if response_line else 'EMPTY'}", file=sys.stderr)
+    |                                                                                                                         ^^^^^^
+189 |                 # #endregion
+190 |                 if not response_line:
+    |
+
+E501 Line too long (156 > 120)
+   --> src/chat_a_doc/http_server.py:211:121
+    |
+209 | …
+210 | …
+211 | …esult' in response_json)}, has_error={('error' in response_json)}", file=sys.stderr)
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+212 | …se_json["result"]:
+213 | …][0].get("text", "") if response_json["result"]["content"] else ""
+    |
+
+E501 Line too long (138 > 120)
+   --> src/chat_a_doc/http_server.py:213:121
+    |
+211 | …     print(f"[DEBUG] MCP response parsed: has_result={('result' in response_json)}, has_error={('error' in response_json)}", file=sy…
+212 | …     if "result" in response_json and "content" in response_json["result"]:
+213 | …         content_text = response_json["result"]["content"][0].get("text", "") if response_json["result"]["content"] else ""
+    |                                                                                                           ^^^^^^^^^^^^^^^^^^
+214 | …         print(f"[DEBUG] Response content preview: {content_text[:200]}", file=sys.stderr)
+215 | …     # #endregion
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:323:12
+    |
+321 | …     # #region agent log
+322 | …     print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+323 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+324 | …     except: pass
+325 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:323:96
+    |
+321 | …     # #region agent log
+322 | …     print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+323 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+324 | …     except: pass
+325 | …     # #endregion
+    |
+
+E501 Line too long (387 > 120)
+   --> src/chat_a_doc/server.py:323:121
+    |
+321 | …
+322 | …r)
+323 | …).write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"server.py:319","message":"ALLOWED_ROOT env var","data":{"ALLOWED_ROOT":default_allowed_root,"title":title,"output_format":output_format},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+324 | …
+325 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:324:9
+    |
+322 | …     print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+323 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+324 | …     except: pass
+    |       ^^^^^^
+325 | …     # #endregion
+326 | …     output_file = generate_filename(
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:324:9
+    |
+322 | …     print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+323 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+324 | …     except: pass
+    |       ^^^^^^^^^^^^
+325 | …     # #endregion
+326 | …     output_file = generate_filename(
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:324:15
+    |
+322 | …     print(f"[DEBUG] ALLOWED_ROOT={default_allowed_root}, title={title}, format={output_format}", file=sys.stderr)
+323 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+324 | …     except: pass
+    |             ^
+325 | …     # #endregion
+326 | …     output_file = generate_filename(
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:333:12
+    |
+331 | …     # #region agent log
+332 | …     print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+333 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+334 | …     except: pass
+335 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:333:96
+    |
+331 | …     # #region agent log
+332 | …     print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+333 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+334 | …     except: pass
+335 | …     # #endregion
+    |
+
+E501 Line too long (373 > 120)
+   --> src/chat_a_doc/server.py:333:121
+    |
+331 | …
+332 | …
+333 | …).write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"server.py:325","message":"Generated output_file path","data":{"output_file":output_file,"output_dir":default_allowed_root},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+334 | …
+335 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:334:9
+    |
+332 | …     print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+333 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+334 | …     except: pass
+    |       ^^^^^^
+335 | …     # #endregion
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:334:9
+    |
+332 | …     print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+333 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+334 | …     except: pass
+    |       ^^^^^^^^^^^^
+335 | …     # #endregion
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:334:15
+    |
+332 | …     print(f"[DEBUG] Generated output_file path: {output_file}", file=sys.stderr)
+333 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+334 | …     except: pass
+    |             ^
+335 | …     # #endregion
+    |
+
+E501 Line too long (207 > 120)
+   --> src/chat_a_doc/server.py:342:121
+    |
+340 | …
+341 | …
+342 | …ed_root)}, isdir: {os.path.isdir(allowed_root) if os.path.exists(allowed_root) else False}", file=sys.stderr)
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+343 | …
+344 | …
+    |
+
+E501 Line too long (163 > 120)
+   --> src/chat_a_doc/server.py:467:121
+    |
+465 | …
+466 | …
+467 | …ame__}, size: {len(result) if hasattr(result, '__len__') else 'N/A'}", file=sys.stderr)
+    |                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+468 | …les"), "debug.log"); open(log_path, "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"B","location":…
+469 | …
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:468:12
+    |
+466 | …     # #region agent log
+467 | …     print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') el…
+468 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+469 | …     except: pass
+470 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:468:96
+    |
+466 | …     # #region agent log
+467 | …     print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') el…
+468 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+469 | …     except: pass
+470 | …     # #endregion
+    |
+
+E501 Line too long (431 > 120)
+   --> src/chat_a_doc/server.py:468:121
+    |
+466 | …
+467 | …esult, '__len__') else 'N/A'}", file=sys.stderr)
+468 | …).write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"B","location":"server.py:446","message":"Before file write","data":{"output_file":output_file,"result_type":type(result).__name__,"result_len":len(result) if hasattr(result,"__len__") else "N/A"},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+469 | …
+470 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:469:9
+    |
+467 | …     print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') el…
+468 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+469 | …     except: pass
+    |       ^^^^^^
+470 | …     # #endregion
+471 | …     if isinstance(result, str):
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:469:9
+    |
+467 | …     print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') el…
+468 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+469 | …     except: pass
+    |       ^^^^^^^^^^^^
+470 | …     # #endregion
+471 | …     if isinstance(result, str):
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:469:15
+    |
+467 | …     print(f"[DEBUG] Writing file: {output_file}, type: {type(result).__name__}, size: {len(result) if hasattr(result, '__len__') el…
+468 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+469 | …     except: pass
+    |             ^
+470 | …     # #endregion
+471 | …     if isinstance(result, str):
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:474:16
+    |
+472 | …     output_file_path = Path(output_file)
+473 | …     # #region agent log
+474 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+475 | …     except: pass
+476 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:474:100
+    |
+472 | …     output_file_path = Path(output_file)
+473 | …     # #region agent log
+474 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+475 | …     except: pass
+476 | …     # #endregion
+    |
+
+E501 Line too long (391 > 120)
+   --> src/chat_a_doc/server.py:474:121
+    |
+472 | …
+473 | …
+474 | … "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"C","location":"server.py:448","message":"Creating parent dirs","data":{"parent":str(output_file_path.parent),"exists":output_file_path.parent.exists()},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+475 | …
+476 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:475:13
+    |
+473 | …     # #region agent log
+474 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+475 | …     except: pass
+    |       ^^^^^^
+476 | …     # #endregion
+477 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:475:13
+    |
+473 | …     # #region agent log
+474 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+475 | …     except: pass
+    |       ^^^^^^^^^^^^
+476 | …     # #endregion
+477 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:475:19
+    |
+473 | …     # #region agent log
+474 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+475 | …     except: pass
+    |             ^
+476 | …     # #endregion
+477 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+E501 Line too long (121 > 120)
+   --> src/chat_a_doc/server.py:482:121
+    |
+480 | …     file_exists = output_file_path.exists()
+481 | …     file_size = output_file_path.stat().st_size if file_exists else 0
+482 | …     print(f"[DEBUG] File written: {output_file_path}, exists: {file_exists}, size: {file_size}", file=sys.stderr)
+    |                                                                                                                   ^
+483 | …     if not file_exists:
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+    |
+
+E501 Line too long (248 > 120)
+   --> src/chat_a_doc/server.py:484:121
+    |
+482 | …tderr)
+483 | …
+484 | … parent exists: {output_file_path.parent.exists()}, parent writable: {os.access(output_file_path.parent, os.W_OK)}", file=sys.stderr)
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+485 | … "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"D","location":"server.py:450","message":"After file wri…
+486 | …
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:485:16
+    |
+483 | …     if not file_exists:
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+485 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+486 | …     except: pass
+487 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:485:100
+    |
+483 | …     if not file_exists:
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+485 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+486 | …     except: pass
+487 | …     # #endregion
+    |
+
+E501 Line too long (387 > 120)
+   --> src/chat_a_doc/server.py:485:121
+    |
+483 | …
+484 | … parent exists: {output_file_path.parent.exists()}, parent writable: {os.access(output_file_path.parent, os.W_OK)}", file=sys.stderr)
+485 | … "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"D","location":"server.py:450","message":"After file write (str)","data":{"output_file":str(output_file_path),"exists":file_exists,"size":file_size},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+486 | …
+487 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:486:13
+    |
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+485 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+486 | …     except: pass
+    |       ^^^^^^
+487 | …     # #endregion
+488 | …     # Verify file was actually created
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:486:13
+    |
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+485 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+486 | …     except: pass
+    |       ^^^^^^^^^^^^
+487 | …     # #endregion
+488 | …     # Verify file was actually created
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:486:19
+    |
+484 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}, parent exists: {output_…
+485 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+486 | …     except: pass
+    |             ^
+487 | …     # #endregion
+488 | …     # Verify file was actually created
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:495:16
+    |
+493 | …     output_file_path = Path(output_file)
+494 | …     # #region agent log
+495 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+496 | …     except: pass
+497 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:495:100
+    |
+493 | …     output_file_path = Path(output_file)
+494 | …     # #region agent log
+495 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+496 | …     except: pass
+497 | …     # #endregion
+    |
+
+E501 Line too long (399 > 120)
+   --> src/chat_a_doc/server.py:495:121
+    |
+493 | …
+494 | …
+495 | … "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"C","location":"server.py:453","message":"Creating parent dirs (bytes)","data":{"parent":str(output_file_path.parent),"exists":output_file_path.parent.exists()},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+496 | …
+497 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:496:13
+    |
+494 | …     # #region agent log
+495 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+496 | …     except: pass
+    |       ^^^^^^
+497 | …     # #endregion
+498 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:496:13
+    |
+494 | …     # #region agent log
+495 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+496 | …     except: pass
+    |       ^^^^^^^^^^^^
+497 | …     # #endregion
+498 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:496:19
+    |
+494 | …     # #region agent log
+495 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+496 | …     except: pass
+    |             ^
+497 | …     # #endregion
+498 | …     output_file_path.parent.mkdir(parents=True, exist_ok=True)
+    |
+
+E501 Line too long (129 > 120)
+   --> src/chat_a_doc/server.py:503:121
+    |
+501 |             file_exists = output_file_path.exists()
+502 |             file_size = output_file_path.stat().st_size if file_exists else 0
+503 |             print(f"[DEBUG] File written (bytes): {output_file_path}, exists: {file_exists}, size: {file_size}", file=sys.stderr)
+    |                                                                                                                         ^^^^^^^^^
+504 |             if not file_exists:
+505 |                 print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+    |
+
+E501 Line too long (133 > 120)
+   --> src/chat_a_doc/server.py:505:121
+    |
+503 | …     print(f"[DEBUG] File written (bytes): {output_file_path}, exists: {file_exists}, size: {file_size}", file=sys.stderr)
+504 | …     if not file_exists:
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+    |                                                                                                                   ^^^^^^^^^^^^^
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+507 | …     except: pass
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:506:16
+    |
+504 | …     if not file_exists:
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |          ^
+507 | …     except: pass
+508 | …     # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/server.py:506:100
+    |
+504 | …     if not file_exists:
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+    |                                                                                              ^
+507 | …     except: pass
+508 | …     # #endregion
+    |
+
+E501 Line too long (389 > 120)
+   --> src/chat_a_doc/server.py:506:121
+    |
+504 | …
+505 | …, file=sys.stderr)
+506 | … "a").write(json.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"D","location":"server.py:455","message":"After file write (bytes)","data":{"output_file":str(output_file_path),"exists":file_exists,"size":file_size},"timestamp":int(time.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+507 | …
+508 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/server.py:507:13
+    |
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+507 | …     except: pass
+    |       ^^^^^^
+508 | …     # #endregion
+509 | …     # Verify file was actually created
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/server.py:507:13
+    |
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+507 | …     except: pass
+    |       ^^^^^^^^^^^^
+508 | …     # #endregion
+509 | …     # Verify file was actually created
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/server.py:507:19
+    |
+505 | …         print(f"[DEBUG] ERROR: File write claimed success but file doesn't exist! Path: {output_file_path}", file=sys.stderr)
+506 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json.dumps({…
+507 | …     except: pass
+    |             ^
+508 | …     # #endregion
+509 | …     # Verify file was actually created
+    |
+
+E701 Multiple statements on one line (colon)
+  --> src/chat_a_doc/utils/filename_generator.py:85:8
+   |
+83 |     os.makedirs(output_dir, exist_ok=True)
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+   |        ^
+86 |     except: pass
+87 |     # #endregion
+   |
+
+E401 [*] Multiple imports on one line
+  --> src/chat_a_doc/utils/filename_generator.py:85:10
+   |
+83 |     os.makedirs(output_dir, exist_ok=True)
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+86 |     except: pass
+87 |     # #endregion
+   |
+help: Split imports
+
+I001 Import block is un-sorted or un-formatted
+  --> src/chat_a_doc/utils/filename_generator.py:85:10
+   |
+83 |     os.makedirs(output_dir, exist_ok=True)
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+   |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+86 |     except: pass
+87 |     # #endregion
+   |
+help: Organize imports
+
+E702 Multiple statements on one line (semicolon)
+  --> src/chat_a_doc/utils/filename_generator.py:85:57
+   |
+83 |     os.makedirs(output_dir, exist_ok=True)
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+   |                                                         ^
+86 |     except: pass
+87 |     # #endregion
+   |
+
+E501 Line too long (488 > 120)
+  --> src/chat_a_doc/utils/filename_generator.py:85:121
+   |
+83 | …
+84 | …
+85 | …app/files"), "debug.log"); open(log_path, "a").write(json_module.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"filename_generator.py:83","message":"generate_filename entry","data":{"output_dir":output_dir,"title":title,"output_format":output_format,"dir_exists":os.path.exists(output_dir)},"timestamp":int(time_module.time()*1000)})+"\n")
+   |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+86 | …
+87 | …
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> src/chat_a_doc/utils/filename_generator.py:85:141
+   |
+83 | …
+84 | …
+85 | …th.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.dumps({"sessionId":"debug-s…
+   |                                                                    ^
+86 | …
+87 | …
+   |
+
+E722 Do not use bare `except`
+  --> src/chat_a_doc/utils/filename_generator.py:86:5
+   |
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+86 |     except: pass
+   |     ^^^^^^
+87 |     # #endregion
+   |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+  --> src/chat_a_doc/utils/filename_generator.py:86:5
+   |
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+86 |     except: pass
+   |     ^^^^^^^^^^^^
+87 |     # #endregion
+   |
+
+E701 Multiple statements on one line (colon)
+  --> src/chat_a_doc/utils/filename_generator.py:86:11
+   |
+84 |     # #region agent log
+85 |     try: import json as json_module, time as time_module; log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug…
+86 |     except: pass
+   |           ^
+87 |     # #endregion
+   |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/utils/filename_generator.py:102:16
+    |
+100 | …     if not os.path.exists(candidate_path):
+101 | …         # #region agent log
+102 | …         try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_mod…
+    |              ^
+103 | …         except: pass
+104 | …         # #endregion
+    |
+
+E702 Multiple statements on one line (semicolon)
+   --> src/chat_a_doc/utils/filename_generator.py:102:100
+    |
+100 | …     if not os.path.exists(candidate_path):
+101 | …         # #region agent log
+102 | …         try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_mod…
+    |                                                                                                  ^
+103 | …         except: pass
+104 | …         # #endregion
+    |
+
+E501 Line too long (400 > 120)
+   --> src/chat_a_doc/utils/filename_generator.py:102:121
+    |
+100 | …
+101 | …
+102 | … "a").write(json_module.dumps({"sessionId":"debug-session","runId":"run1","hypothesisId":"A","location":"filename_generator.py:97","message":"generate_filename returning path","data":{"candidate_path":candidate_path,"sequence":sequence},"timestamp":int(time_module.time()*1000)})+"\n")
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+103 | …
+104 | …
+    |
+
+E722 Do not use bare `except`
+   --> src/chat_a_doc/utils/filename_generator.py:103:13
+    |
+101 | …     # #region agent log
+102 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.…
+103 | …     except: pass
+    |       ^^^^^^
+104 | …     # #endregion
+105 | …     return candidate_path
+    |
+
+S110 `try`-`except`-`pass` detected, consider logging the exception
+   --> src/chat_a_doc/utils/filename_generator.py:103:13
+    |
+101 | …     # #region agent log
+102 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.…
+103 | …     except: pass
+    |       ^^^^^^^^^^^^
+104 | …     # #endregion
+105 | …     return candidate_path
+    |
+
+E701 Multiple statements on one line (colon)
+   --> src/chat_a_doc/utils/filename_generator.py:103:19
+    |
+101 | …     # #region agent log
+102 | …     try: log_path = os.path.join(os.environ.get("ALLOWED_ROOT", "/app/files"), "debug.log"); open(log_path, "a").write(json_module.…
+103 | …     except: pass
+    |             ^
+104 | …     # #endregion
+105 | …     return candidate_path
+    |
+
+Found 68 errors.
+[*] 1 fixable with the `--fix` option.
+Error: Process completed with exit code 1.

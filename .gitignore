@@ -63,5 +63,5 @@ tests/test_output/templates/*
 # Documentation directory
 docs/
 
-doc-gen.code-workspace
+chat-a-doc.code-workspace
 TEMP.md

@@ -367,7 +367,10 @@ async def handle_call_tool(
         # #region agent log
         exists = os.path.exists(allowed_root)
         isdir = os.path.isdir(allowed_root) if exists else False
-        print(f"[DEBUG] get_allowed_root() returned: {allowed_root}, exists: {exists}, isdir: {isdir}", file=sys.stderr)
+        print(
+            f"[DEBUG] get_allowed_root() returned: {allowed_root}, exists: {exists}, isdir: {isdir}",
+            file=sys.stderr,
+        )
         # #endregion
     except Exception as e:
         # #region agent log
