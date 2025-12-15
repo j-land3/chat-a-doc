@@ -145,8 +145,7 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                         except Exception:  # noqa: S110 (intentionally broad for cleanup)
                             pass
                         error_msg = (
-                            f"MCP server process died during timeout "
-                            f"(exit code: {process.returncode}): {stderr_output}"
+                            f"MCP server process died during timeout (exit code: {process.returncode}): {stderr_output}"
                         )
                         raise RuntimeError(error_msg)
 
