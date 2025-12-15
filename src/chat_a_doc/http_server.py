@@ -37,7 +37,8 @@ def get_or_create_session(session_id):
             if "ALLOWED_ROOT" not in env:
                 env["ALLOWED_ROOT"] = "/app/files"
             # #region agent log
-            print(f"[DEBUG] Spawning MCP server with ALLOWED_ROOT={env.get('ALLOWED_ROOT', 'NOT SET')}", file=sys.stderr)
+            allowed_root_val = env.get("ALLOWED_ROOT", "NOT SET")
+            print(f"[DEBUG] Spawning MCP server with ALLOWED_ROOT={allowed_root_val}", file=sys.stderr)
             # #endregion
             process = subprocess.Popen(  # noqa: S603 (sys.executable is trusted)
                 [sys.executable, "-m", "chat_a_doc"],
@@ -49,7 +50,10 @@ def get_or_create_session(session_id):
                 env=env,  # Explicitly pass environment
             )
             # #region agent log
-            print(f"[DEBUG] Spawned MCP server process: pid={process.pid}, returncode={process.returncode}", file=sys.stderr)
+            print(
+                f"[DEBUG] Spawned MCP server process: pid={process.pid}, returncode={process.returncode}",
+                file=sys.stderr,
+            )
             # #endregion
             # Start background thread to forward stderr to main process stderr
             stderr_thread = threading.Thread(target=forward_stderr, args=(process,), daemon=True)
@@ -185,7 +189,8 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
 
                 response_line = response_queue.get()
                 # #region agent log
-                print(f"[DEBUG] Received response line: {response_line[:500] if response_line else 'EMPTY'}", file=sys.stderr)
+                response_preview = response_line[:500] if response_line else "EMPTY"
+                print(f"[DEBUG] Received response line: {response_preview}", file=sys.stderr)
                 # #endregion
                 if not response_line:
                     # Empty response - check if process died
@@ -208,16 +213,23 @@ class MCPHTTPHandler(BaseHTTPRequestHandler):
                 try:
                     response_json = json.loads(response_line.strip())
                     # #region agent log
-                    print(f"[DEBUG] MCP response parsed: has_result={('result' in response_json)}, has_error={('error' in response_json)}", file=sys.stderr)
+                    has_result = "result" in response_json
+                    has_error = "error" in response_json
+                    print(
+                        f"[DEBUG] MCP response parsed: has_result={has_result}, has_error={has_error}",
+                        file=sys.stderr,
+                    )
                     if "result" in response_json and "content" in response_json["result"]:
-                        content_text = response_json["result"]["content"][0].get("text", "") if response_json["result"]["content"] else ""
+                        content_list = response_json["result"]["content"]
+                        content_text = content_list[0].get("text", "") if content_list else ""
                         print(f"[DEBUG] Response content preview: {content_text[:200]}", file=sys.stderr)
                     # #endregion
                     response_body = json.dumps(response_json).encode("utf-8")
                 except json.JSONDecodeError as e:
                     # If not valid JSON, return as-is
                     # #region agent log
-                    print(f"[DEBUG] MCP response not JSON (error: {e}): {response_line[:500]}", file=sys.stderr)
+                    error_preview = response_line[:500] if response_line else "EMPTY"
+                    print(f"[DEBUG] MCP response not JSON (error: {e}): {error_preview}", file=sys.stderr)
                     # #endregion
                     response_body = response_line.encode("utf-8")
 
