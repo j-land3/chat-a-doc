@@ -7,7 +7,9 @@ HTTP requests to verify the containerized application works correctly.
 import json
 import os
 import shutil
+import stat
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
@@ -53,6 +55,15 @@ def docker_container(docker_image):
 
     # Create templates directory
     (temp_path / "templates").mkdir(exist_ok=True)
+
+    # Fix permissions: Make directory writable by container user (UID 1000)
+    # This is necessary because volume mounts preserve host permissions,
+    # and in CI the temp dir might be owned by a different user
+    # #region agent log
+    import stat
+    os.chmod(temp_dir, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # 777 for testing
+    print(f"[TEST DEBUG] Set temp_dir permissions: {oct(os.stat(temp_dir).st_mode)[-3:]}", file=sys.stderr)
+    # #endregion
 
     container_name = f"chat-a-doc-test-{int(time.time())}"
 
