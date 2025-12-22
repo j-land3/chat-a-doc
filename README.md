@@ -42,31 +42,25 @@ For csv, md, html and txt formats, templates will not be presented.
 #### Data extraction and conversion
 - Extract a comparison table from a discussion and export as csv for use as a spreadsheet.
 - Compile statistics on a domain and export for use in a spreadsheet
-- Export metrics to CSV for analysis in any app
 
 #### Template-based professional documents
 - Generate a meeting summary as PDF with corporate style template to share with stakeholders and RAG repository
-- Generate an action plan to share with project collaborators
-- Convert technical documentation to PDF for upload to knowledgebase
 - Collaborate with AI on a business proposal and export to Word for final finessing.
-- Work with AI to refine a blog post then convert to HTML for publishing
 
 ## Features
 
 ### Document Generation
 - **Multiple Formats**: PDF, DOCX, HTML, Markdown, TXT, CSV
-- **Word Templates**: Interactive template selection (A, B, C...) with automatic styling application
-- **PDF Templates**: Optional CSS-based templates for custom PDF styling (corporate, modern, academic examples included)
-- **Auto-filenames**: Intuitive, content-based file naming by AI model
+- **Word & PDF Templates**: Interactive template selection (A, B, C...) with automatic styling application
+- **Auto-filenames**: Content-based automatic file naming
 - **HTTP File Links**: Clickable HTTP links for generated files (optional for chat clients w/ local file linking disabled)
 
 ### CSV Generation
-- **Custom Implementation**: Extracts tables from markdown and converts to CSV format
-- **Table Data Extraction**: Extracts table data from markdown tables or HTML tables in input
+- **Table Data Extraction**: Extracts table data from chat markdown
 - **Security**: Formula injection protection (see Security section)
 
 ### Effective Tool Instructions
-- **Comprehensive Documentation**: Detailed parameter descriptions and usage examples
+- **Context-Aware**: Detailed, without bloat
 - **Title Requirements**: Guidance for generating meaningful document titles
 - **Template Concierge**: Guidance for offering template selection options
 
@@ -79,7 +73,7 @@ For csv, md, html and txt formats, templates will not be presented.
 - **DOCX**: Generated from markdown using python-markdown + python-docx (with template support)
 
 ### Security
-- **Path Validation**: All operations restricted to `ALLOWED_ROOT` directory (required for non-docker installs only, enforced at startup)
+- **Path Validation**: All operations restricted to `ALLOWED_ROOT` directory
 - **Docker Isolation**: Non-root user, restricted volume mounts, no host root access
 - **No External Binaries**: Uses lightweight Python libraries
 - **Input Validation**: Comprehensive parameter and format validation
